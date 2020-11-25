@@ -1,4 +1,4 @@
-module github.com/K0enM/fiver_vhost
+module github.com/K0enM/fiber_vhost
 
 go 1.15
 
