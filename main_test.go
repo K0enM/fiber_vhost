@@ -14,7 +14,7 @@ func Test_Vhost_Match(t *testing.T) {
 	app.Use(New(Config{
 		Hostname: want,
 		Handler: func(c *fiber.Ctx) error {
-			got := c.Locals("vhost").(Vhost)
+			got := ToVhostStruct(c.Locals("vhost"))
 			if !(got.Host == want) {
 				t.Error("Error: incorrect match, host does not match hostname")
 			}

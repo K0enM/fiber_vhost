@@ -5,26 +5,25 @@ import (
 )
 
 type Vhost struct {
-	Host string
+	Host     string
 	Hostname string
-	Length int
+	Length   int
 }
 
-func New(config ...Config) func(c *fiber.Ctx) error {
-	
+func New(config ...Config) fiber.Handler {
+
 	cfg := configDefault(config...)
-	
 
 	return func(c *fiber.Ctx) error {
 		if cfg.Next != nil && cfg.Next(c) {
 			return c.Next()
 		}
-		
+
 		if c.Hostname() == cfg.Hostname {
 			vh := Vhost{
-				Host: c.Hostname(),
+				Host:     c.Hostname(),
 				Hostname: cfg.Hostname,
-				Length: len(cfg.Hostname),
+				Length:   len(cfg.Hostname),
 			}
 			c.Locals("vhost", vh)
 		} else {
@@ -33,4 +32,8 @@ func New(config ...Config) func(c *fiber.Ctx) error {
 
 		return cfg.Handler(c)
 	}
+}
+
+func ToVhostStruct(val interface{}) Vhost {
+	return val.(Vhost)
 }
