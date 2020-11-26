@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// go test -run Test_Vhost_Match
 func Test_Vhost_Match(t *testing.T) {
 	want := "example.com"
 
@@ -29,6 +30,7 @@ func Test_Vhost_Match(t *testing.T) {
 
 }
 
+// go test -run Test_Vhost_No_Match
 func Test_Vhost_No_Match(t *testing.T) {
 	want := "test.com"
 
@@ -49,6 +51,7 @@ func Test_Vhost_No_Match(t *testing.T) {
 	app.Test(req)
 }
 
+// go test -run Test_VHost_Next_Skip
 func Test_VHost_Next_Skip(t *testing.T) {
 	want := "example.com"
 

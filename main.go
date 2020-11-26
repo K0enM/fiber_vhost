@@ -31,7 +31,6 @@ func New(config ...Config) func(c *fiber.Ctx) error {
 			return c.Next()
 		}
 
-		cfg.Handler(c)
-		return nil
+		return cfg.Handler(c)
 	}
 }
