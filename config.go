@@ -5,23 +5,23 @@ import (
 )
 
 type Config struct {
-	Next func(c *fiber.Ctx) bool
-
-	Hostname string
-
-	Handler func(c *fiber.Ctx) error
+	Next                 func(c *fiber.Ctx) bool
+	Hostname             string
+	Handler              func(c *fiber.Ctx) error
+	HostnameRegexpString string
 }
 
 var ConfigDefault = Config{
-	Next: nil,
+	Next:     nil,
 	Hostname: "vhost.local",
 	Handler: func(c *fiber.Ctx) error {
 		return nil
 	},
+	HostnameRegexpString: "",
 }
 
 func configDefault(config ...Config) Config {
-	if len(config)  < 1 {
+	if len(config) < 1 {
 		return ConfigDefault
 	}
 
@@ -36,8 +36,9 @@ func configDefault(config ...Config) Config {
 	if cfg.Handler == nil {
 		cfg.Handler = ConfigDefault.Handler
 	}
+	if cfg.HostnameRegexpString == "" {
+		cfg.HostnameRegexpString = ConfigDefault.HostnameRegexpString
+	}
 
 	return cfg
 }
-
-

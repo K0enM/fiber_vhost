@@ -5,26 +5,21 @@ import (
 	"strings"
 )
 
-const AsteriskRegexp = "/\\*/g"
+const AsteriskRegexp = "/\\\\*/g"
 const AsteriskReplace = "([^.]+)"
-const EndAnchoredRegexp = "/(?:^|[^\\])(?:\\\\)*\\$$/"
-const EscapeRegexp = "/([.+?^=!:${}()|[\\]/\\])/g"
-const EscapeReplace = "\\$1"
+const EndAnchoredRegexp = "/(?:^|[^\\\\])(?:\\\\\\\\)*\\$$/"
+const EscapeRegexp = "/([.+?^=!:${}()|[\\\\]/\\\\])/g"
+const EscapeReplace = "\\\\$1"
 
 func compile_regexp(to_match string) (*regexp.Regexp, error) {
 	to_match = enforce_start_end_characters(to_match)
 	return regexp.Compile(to_match)
 }
 
-func to_regexp(string to_match) (*regexp.Regexp, error) {
+func string_to_regexp(to_match string) (*regexp.Regexp, error) {
 	strings.Replace(to_match, EscapeRegexp, EscapeReplace, 1)
 	strings.Replace(to_match, AsteriskRegexp, AsteriskReplace, -1)
-	return compile_regexp(str)
-}
-
-func complete_regexp(re *regexp.Regexp) (*regexp.Regexp, error) {
-	str := re.String()
-	return compile_regexp(str)
+	return compile_regexp(to_match)
 }
 
 func enforce_start_end_characters(str string) string {
@@ -32,10 +27,18 @@ func enforce_start_end_characters(str string) string {
 		str = string("^") + str
 	}
 
-	anchor_test := regexp.Compile(EndAnchoredRegexp)
+	anchor_test := regexp.MustCompile(EndAnchoredRegexp)
 
 	if !anchor_test.MatchString(str) {
 		str = str + string("$")
 	}
 	return str
+}
+
+func match(re *regexp.Regexp, str string) bool {
+	if re.MatchString(str) {
+		return true
+	}
+
+	return false
 }
