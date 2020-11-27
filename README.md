@@ -1,5 +1,5 @@
 # fiber_vhost
-Vhost (Virtual host) middleware for [Fiber](https://github.com/gofiber/fiber) that enables the use of virtual hosts based on the Host Header.
+Vhost (Virtual host) middleware for [Fiber](https://github.com/gofiber/fiber) that enables the use of virtual hosts based on the Host Header. It is based on the [Express vhost](https://github.com/expressjs/vhost) middleware.
 
 ### Table of Contents
 - [Signatures](#signatures)
@@ -38,6 +38,26 @@ app.Use(fiber_vhost.New(fiber_vhost.Config{
 }))
 ```
 
+#### **Matching with a wildcard in the hostname**
+```go
+app.Use(fiber_vhost.New(fiber_vhost.Config{
+	Hostname: "*.example.com",
+	Handler: func(c *fiber.Ctx) error {
+		return c.SendString("Matched with a wildcard")
+	},
+}))
+```
+
+#### **Matching with a regexp**
+```go
+app.Use(fiber_vhost.New(fiber_vhost.Config{
+	HostnameRegexp: "",
+	Handler: func(c *fiber.Ctx) error {
+		return c.SendString("Matched with a regexp")
+	},
+}))
+```
+
 #### **Define Next function to decide if to skip this middleware**
 ```go
 app.Use(fiber_vhost.New(fiber_vhost.Config{
@@ -63,6 +83,8 @@ type Config struct {
 	Hostname string
 
 	Handler func(c *fiber.Ctx) error
+
+	HostnameRegexp string
 }
 ```
 
@@ -74,10 +96,10 @@ var ConfigDefault = Config{
 	Handler: func(c *fiber.Ctx) error {
 		return nil
 	},
+	HostnameRegexpString: "",
 }
 ```
 
 ### TODO
 - Comment the code
 - Document the data added to `fiber.Ctx.Locals()`
-- Match based on regex, not pure string match
