@@ -3,6 +3,7 @@ Vhost (Virtual host) middleware for [Fiber](https://github.com/gofiber/fiber) th
 
 ### Table of Contents
 - [Signatures](#signatures)
+- [Data added to context](#data-added-to-fiber-context)
 - [Examples](#examples)
 - [Config](#config)
 - [Default Config](#default-config)
@@ -11,6 +12,14 @@ Vhost (Virtual host) middleware for [Fiber](https://github.com/gofiber/fiber) th
 ### Signatures
 ```go
 func New(config ...Config) func(c *fiber.Ctx) error
+```
+### Data added to fiber context
+```go
+type struct Vhost {
+	Host string
+	Hostname string
+	HostnameRegexpString
+}
 ```
 
 ## Examples
@@ -102,4 +111,3 @@ var ConfigDefault = Config{
 
 ### TODO
 - Comment the code
-- Document the data added to `fiber.Ctx.Locals()`
