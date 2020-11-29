@@ -110,4 +110,5 @@ var ConfigDefault = Config{
 ```
 
 ### TODO
-- Comment the code
+- Create documentation
+- Create & check workflows`
